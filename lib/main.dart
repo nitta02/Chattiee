@@ -1,5 +1,4 @@
 import 'package:chattiee/auth/login.dart';
-import 'package:chattiee/home.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          appBarTheme: AppBarTheme(
+          appBarTheme: const AppBarTheme(
               elevation: 0,
               backgroundColor: Colors.transparent,
               centerTitle: true,
@@ -23,7 +22,7 @@ class MyApp extends StatelessWidget {
                 letterSpacing: 1.8,
               ))),
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home: const LoginScreen(),
     );
   }
 }
