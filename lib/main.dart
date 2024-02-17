@@ -1,7 +1,14 @@
-import 'package:chattiee/auth/login.dart';
+// import 'package:chattiee/screens/auth/login.dart';
+import 'package:chattiee/firebase_options.dart';
+import 'package:chattiee/screens/pages/splash.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();;
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -22,7 +29,7 @@ class MyApp extends StatelessWidget {
                 letterSpacing: 1.8,
               ))),
       debugShowCheckedModeBanner: false,
-      home: const LoginScreen(),
+      home: const SplashScreen(),
     );
   }
 }

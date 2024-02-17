@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "315589681096",
+    "project_id": "chattiee-506d3",
+    "storage_bucket": "chattiee-506d3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:315589681096:android:aa725152ede38b2bfceafd",
+        "android_client_info": {
+          "package_name": "com.example.chattiee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "315589681096-ec1g6bb2d4gctvc60jh1qsnjar2elnjo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chattiee",
+            "certificate_hash": "18673da5f468b540e4a6ef9d1a2a968fb7667cae"
+          }
+        },
+        {
+          "client_id": "315589681096-3v2mi237svo4o8jfp5as0tebn86egieo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUSrZIRlqwMNZm9sSJ46TnnLNdI8q0qG8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "315589681096-3v2mi237svo4o8jfp5as0tebn86egieo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

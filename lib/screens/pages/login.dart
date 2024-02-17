@@ -1,5 +1,12 @@
-import 'package:chattiee/home.dart';
+// ignore_for_file: avoid_print
+
+import 'dart:io';
+
+import 'package:chattiee/screens/pages/home.dart';
+import 'package:chattiee/services/dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -51,11 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     shape: const StadiumBorder(),
                     elevation: 1),
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const HomeScreen(),
-                      ));
+                  _handleGoogleClick();
                 },
 
                 //google icon
@@ -76,5 +79,39 @@ class _LoginScreenState extends State<LoginScreen> {
                 ))),
       ],
     ));
+  }
+
+  _handleGoogleClick() {
+    signInWithGoogle().then((value) {
+      if (value != null) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomeScreen(),
+            ));
+      } else {}
+    });
+  }
+
+  Future<dynamic> signInWithGoogle() async {
+    try {
+      await InternetAddress.lookup('google.com');
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      CustomDialogs.snackBar(context, 'Something went wrong');
+      // TODO
+      print('exception->$e');
+    }
   }
 }
