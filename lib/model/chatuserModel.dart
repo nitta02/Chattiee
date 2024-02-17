@@ -21,14 +21,14 @@ class UserModel {
   late final String tokenPush;
 
   UserModel.fromJson(Map<String, dynamic> json) {
-    image = json['image'];
-    created = json['created'];
-    name = json['name'];
-    details = json['details'];
-    isOnline = json['is_online'];
+    image = json['image'] ?? "";
+    created = json['created'] ?? "";
+    name = json['name'] ?? "";
+    details = json['details'] ?? "";
+    isOnline = json['is_online'] ?? "";
     id = json['id'];
-    lastActive = json['last_active'];
-    tokenPush = json['tokenPush'];
+    lastActive = json['last_active'] ?? "";
+    tokenPush = json['tokenPush'] ?? "";
   }
 
   Map<String, dynamic> toJson() {

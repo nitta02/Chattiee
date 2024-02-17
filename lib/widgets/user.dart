@@ -1,12 +1,24 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
-class UserWidget extends StatelessWidget {
-  
-  const UserWidget({super.key});
+import 'package:chattiee/model/chatuserModel.dart';
+
+class UserWidget extends StatefulWidget {
+  final UserModel user;
+
+  const UserWidget({
+    Key? key,
+    required this.user,
+  }) : super(key: key);
 
   @override
+  State<UserWidget> createState() => _UserWidgetState();
+}
+
+class _UserWidgetState extends State<UserWidget> {
+  @override
   Widget build(BuildContext context) {
-    return const Card(
+    return Card(
       shadowColor: Colors.red,
       surfaceTintColor: Colors.blue,
       margin: EdgeInsets.symmetric(
@@ -14,9 +26,9 @@ class UserWidget extends StatelessWidget {
         vertical: 10,
       ),
       child: ListTile(
-        leading: Icon(Icons.person),
-        title: Text('User'),
-        subtitle: Text('user details'),
+        leading: CircleAvatar(backgroundImage: NetworkImage(widget.user.image)),
+        title: Text(widget.user.name),
+        subtitle: Text(widget.user.details),
         trailing: Text('12:00 AM'),
       ),
     );

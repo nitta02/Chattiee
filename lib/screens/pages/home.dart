@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:chattiee/model/chatuserModel.dart';
 import 'package:chattiee/screens/auth/constants.dart';
 import 'package:chattiee/screens/pages/login.dart';
 import 'package:chattiee/widgets/user.dart';
@@ -15,6 +16,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List dataList = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,28 +43,37 @@ class _HomeScreenState extends State<HomeScreen> {
         body: StreamBuilder(
           stream: firebaseFirestore.collection('users').snapshots(),
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              final data = snapshot.data?.docs;
-              List dataList = [];
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+              case ConnectionState.none:
+                Center(
+                  child: CircularProgressIndicator(),
+                );
 
-              for (var i in data!) {
-                print(json.encode(i.data()));
-                dataList.add(i.data()['name']);
-              }
+              case ConnectionState.active:
+              case ConnectionState.done:
+                if (snapshot.hasData) {
+                  final data = snapshot.data?.docs;
+                  dataList =
+                      data?.map((e) => UserModel.fromJson(e.data())).toList() ??
+                          [];
 
-              print(data);
-              return ListView.builder(
-                itemCount: 15,
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return const UserWidget();
-                },
-              );
-            } else {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
+                  if (dataList.isNotEmpty) {
+                    return ListView.builder(
+                      itemCount: dataList.length,
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return UserWidget(
+                          user: dataList[index],
+                        );
+                      },
+                    );
+                  }
+                }
             }
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           },
         ));
   }
