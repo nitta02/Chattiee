@@ -1,4 +1,6 @@
 // import 'package:chattiee/screens/auth/login.dart';
+// ignore_for_file: unused_local_variable
+
 import 'package:chattiee/screens/auth/constants.dart';
 import 'package:chattiee/screens/pages/login.dart';
 import 'package:chattiee/screens/pages/home.dart';

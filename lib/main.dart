@@ -1,4 +1,6 @@
 // import 'package:chattiee/screens/auth/login.dart';
+// ignore_for_file: empty_statements
+
 import 'package:chattiee/firebase_options.dart';
 import 'package:chattiee/screens/pages/splash.dart';
 import 'package:firebase_core/firebase_core.dart';

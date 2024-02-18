@@ -110,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } catch (e) {
       // ignore: use_build_context_synchronously
       CustomDialogs.snackBar(context, 'Something went wrong');
-      // TODO
+
       print('exception->$e');
     }
   }

@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:chattiee/model/chatuserModel.dart';
 import 'package:chattiee/screens/auth/constants.dart';
@@ -46,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
               case ConnectionState.none:
-                Center(
+                const Center(
                   child: CircularProgressIndicator(),
                 );
 
@@ -71,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                 }
             }
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           },

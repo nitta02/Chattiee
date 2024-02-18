@@ -21,7 +21,7 @@ class _UserWidgetState extends State<UserWidget> {
     return Card(
       shadowColor: Colors.red,
       surfaceTintColor: Colors.blue,
-      margin: EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
         horizontal: 10,
         vertical: 10,
       ),
@@ -29,7 +29,7 @@ class _UserWidgetState extends State<UserWidget> {
         leading: CircleAvatar(backgroundImage: NetworkImage(widget.user.image)),
         title: Text(widget.user.name),
         subtitle: Text(widget.user.details),
-        trailing: Text('12:00 AM'),
+        trailing: const Text('12:00 AM'),
       ),
     );
   }
