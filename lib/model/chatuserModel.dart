@@ -5,6 +5,7 @@ class UserModel {
     required this.image,
     required this.created,
     required this.name,
+    required this.email,
     required this.details,
     required this.isOnline,
     required this.id,
@@ -14,6 +15,7 @@ class UserModel {
   late final String image;
   late final String created;
   late final String name;
+  late final String email;
   late final String details;
   late final bool isOnline;
   late final String id;
@@ -24,6 +26,7 @@ class UserModel {
     image = json['image'] ?? "";
     created = json['created'] ?? "";
     name = json['name'] ?? "";
+    email = json['email'] ?? "";
     details = json['details'] ?? "";
     isOnline = json['is_online'] ?? "";
     id = json['id'];
@@ -36,6 +39,7 @@ class UserModel {
     data['image'] = image;
     data['created'] = created;
     data['name'] = name;
+    data['email'] = email;
     data['details'] = details;
     data['is_online'] = isOnline;
     data['id'] = id;

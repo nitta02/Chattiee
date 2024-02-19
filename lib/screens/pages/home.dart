@@ -1,6 +1,5 @@
-
 import 'package:chattiee/model/chatuserModel.dart';
-import 'package:chattiee/screens/auth/constants.dart';
+import 'package:chattiee/services/auth/constants.dart';
 import 'package:chattiee/screens/pages/login.dart';
 import 'package:chattiee/widgets/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -56,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   dataList =
                       data?.map((e) => UserModel.fromJson(e.data())).toList() ??
                           [];
-
+                  
                   if (dataList.isNotEmpty) {
                     return ListView.builder(
                       itemCount: dataList.length,

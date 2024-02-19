@@ -1,8 +1,9 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'dart:io';
 
 import 'package:chattiee/screens/pages/home.dart';
+import 'package:chattiee/services/checkUsers.dart';
 import 'package:chattiee/services/dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -82,14 +83,24 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _handleGoogleClick() {
-    signInWithGoogle().then((value) {
+    signInWithGoogle().then((value) async {
       if (value != null) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const HomeScreen(),
-            ));
-      } else {}
+        if ((await CheckUser.userCheck())) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HomeScreen(),
+              ));
+        } else {
+          await CheckUser.createUser().then((value) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomeScreen(),
+                ));
+          });
+        }
+      }
     });
   }
 
@@ -108,7 +119,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
       return await FirebaseAuth.instance.signInWithCredential(credential);
     } catch (e) {
-      // ignore: use_build_context_synchronously
       CustomDialogs.snackBar(context, 'Something went wrong');
 
       print('exception->$e');
