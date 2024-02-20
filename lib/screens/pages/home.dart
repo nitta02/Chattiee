@@ -1,4 +1,5 @@
 import 'package:chattiee/model/chatuserModel.dart';
+import 'package:chattiee/screens/pages/profile.dart';
 import 'package:chattiee/services/auth/constants.dart';
 import 'package:chattiee/screens/pages/login.dart';
 import 'package:chattiee/widgets/user.dart';
@@ -29,9 +30,14 @@ class _HomeScreenState extends State<HomeScreen> {
             IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
             IconButton(
                 onPressed: () {
-                  _signOut();
+                  // _signOut();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProfileScreen(),
+                      ));
                 },
-                icon: const Icon(Icons.logout)),
+                icon: const Icon(Icons.more_horiz)),
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -55,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   dataList =
                       data?.map((e) => UserModel.fromJson(e.data())).toList() ??
                           [];
-                  
+
                   if (dataList.isNotEmpty) {
                     return ListView.builder(
                       itemCount: dataList.length,
@@ -76,15 +82,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ));
   }
 
-  // sign out function
-  _signOut() async {
-    await FirebaseAuth.instance.signOut();
-    await GoogleSignIn().signOut().then((value) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const LoginScreen(),
-          ));
-    });
-  }
+
 }

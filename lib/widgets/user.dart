@@ -29,7 +29,20 @@ class _UserWidgetState extends State<UserWidget> {
         leading: CircleAvatar(backgroundImage: NetworkImage(widget.user.image)),
         title: Text(widget.user.name),
         subtitle: Text(widget.user.details),
-        trailing: const Text('12:00 AM'),
+        trailing: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Container(
+              height: 15,
+              width: 15,
+              decoration: BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.circular(15),
+              ),
+            ),
+            const Text('12:00 AM'),
+          ],
+        ),
       ),
     );
   }
