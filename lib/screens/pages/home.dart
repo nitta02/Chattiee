@@ -1,11 +1,8 @@
 import 'package:chattiee/model/chatuserModel.dart';
 import 'package:chattiee/screens/pages/profile.dart';
 import 'package:chattiee/services/auth/constants.dart';
-import 'package:chattiee/screens/pages/login.dart';
 import 'package:chattiee/widgets/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,7 +12,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List dataList = [];
+  List<UserModel> dataList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +31,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ProfileScreen(),
+                        builder: (context) => ProfileScreen(
+                          userModel: dataList[1],
+                        ),
                       ));
                 },
                 icon: const Icon(Icons.more_horiz)),
@@ -81,6 +80,4 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         ));
   }
-
-
 }
