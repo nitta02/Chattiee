@@ -27,6 +27,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           IconButton(
               onPressed: () {
                 auth.signOut().then((value) {
+                  Navigator.pop(context);
+
+                  Navigator.pop(context);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -41,14 +44,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Container(
-              height: 100,
-              width: 100,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: NetworkImage(widget.userModel.image)),
-              ),
+            SizedBox(
+              height: 30,
             ),
+            Stack(children: [
+              CircleAvatar(
+                minRadius: 50,
+                child: Image.network(widget.userModel.image),
+              ),
+              Positioned(
+                bottom: 0,
+                top: 80,
+                right: 0,
+                left: 80,
+                child: MaterialButton(
+                  onPressed: () {},
+                  child: Icon(Icons.edit),
+                ),
+              ),
+            ]),
             const SizedBox(
               height: 10,
             ),
