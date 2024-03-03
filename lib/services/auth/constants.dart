@@ -6,3 +6,5 @@ FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
 
 
+ // to return current user
+   User get user => auth.currentUser!;

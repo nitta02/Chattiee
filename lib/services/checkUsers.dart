@@ -33,4 +33,8 @@ class CheckUser {
         .doc(user.uid)
         .set(chatUser.toJson());
   }
+
+
+
+
 }

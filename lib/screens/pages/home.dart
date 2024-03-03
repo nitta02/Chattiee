@@ -44,7 +44,10 @@ class _HomeScreenState extends State<HomeScreen> {
           child: const Icon(Icons.add_comment),
         ),
         body: StreamBuilder(
-          stream: firebaseFirestore.collection('users').snapshots(),
+          stream: firebaseFirestore
+              .collection('users')
+              .where('id', isNotEqualTo: user.uid)
+              .snapshots(),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
