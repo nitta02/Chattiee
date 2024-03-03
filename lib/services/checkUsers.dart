@@ -1,9 +1,10 @@
+import 'dart:math';
+
 import 'package:chattiee/model/chatuserModel.dart';
 import 'package:chattiee/services/auth/constants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class CheckUser {
-  static User get user => auth.currentUser!;
+  // static User get user => auth.currentUser!;
 
   //If user is already exist
 
@@ -34,7 +35,19 @@ class CheckUser {
         .set(chatUser.toJson());
   }
 
+  //For getting self information
 
-
-
+  static Future<void> selfInfo() async {
+    await firebaseFirestore
+        .collection('users')
+        .doc(user.uid)
+        .get()
+        .then((value) {
+      if (value.exists) {
+        userModel = UserModel.fromJson(value.data()!);
+      } else {
+        createUser().then((value) => selfInfo());
+      }
+    });
+  }
 }

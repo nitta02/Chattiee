@@ -1,6 +1,7 @@
 import 'package:chattiee/model/chatuserModel.dart';
 import 'package:chattiee/screens/pages/profile.dart';
 import 'package:chattiee/services/auth/constants.dart';
+import 'package:chattiee/services/checkUsers.dart';
 import 'package:chattiee/widgets/user.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<UserModel> dataList = [];
+
+  @override
+  void initState() {
+    CheckUser.selfInfo();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ProfileScreen(
-                          userModel: dataList[1],
+                          userModel: userModel,
                         ),
                       ));
                 },
