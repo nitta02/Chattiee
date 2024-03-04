@@ -12,15 +12,15 @@ class UserModel {
     required this.lastActive,
     required this.tokenPush,
   });
-  late final String image;
-  late final String created;
-  late final String name;
-  late final String email;
-  late final String details;
-  late final bool isOnline;
-  late final String id;
-  late final String lastActive;
-  late final String tokenPush;
+  late String created;
+  late String image;
+  late String name;
+  late String email;
+  late String details;
+  late bool isOnline;
+  late String id;
+  late String lastActive;
+  late String tokenPush;
 
   UserModel.fromJson(Map<String, dynamic> json) {
     image = json['image'] ?? "";

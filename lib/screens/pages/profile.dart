@@ -50,7 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   Stack(children: [
@@ -65,7 +65,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       left: 80,
                       child: MaterialButton(
                         onPressed: () {},
-                        child: Icon(Icons.edit),
+                        child: const Icon(Icons.edit),
                       ),
                     ),
                   ]),
@@ -78,6 +78,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   TextFormField(
                     initialValue: widget.userModel.name,
+                    onSaved: (newValue) => userModel.name = newValue ?? '',
+                    validator: (value) => value != null && value.isNotEmpty
+                        ? null
+                        : "REQUIRED FIELD",
                     decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.person),
                         label: const Text('Name'),
@@ -90,6 +94,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   TextFormField(
                     initialValue: widget.userModel.details,
+                    onSaved: (newValue) => userModel.details = newValue ?? '',
+                    validator: (value) => value != null && value.isNotEmpty
+                        ? null
+                        : "REQUIRED FIELD",
                     decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.info_outline),
                         label: const Text('Details'),
@@ -101,7 +109,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     height: 25,
                   ),
                   ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if (globalKey.currentState!.validate()) {
+                          globalKey.currentState!.save();
+                          CheckUser.userUpdateDetails().then((value) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('Successfully Updated')));
+                          });
+                        } else {}
+                      },
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

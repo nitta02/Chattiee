@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:chattiee/model/chatuserModel.dart';
 import 'package:chattiee/services/auth/constants.dart';
 
@@ -48,6 +46,14 @@ class CheckUser {
       } else {
         createUser().then((value) => selfInfo());
       }
+    });
+  }
+
+  //UPDATE USER INFORMATION FUNCTIONS OR METHOD
+  static Future<void> userUpdateDetails() async {
+    await firebaseFirestore.collection('users').doc(user.uid).update({
+      'name': userModel.name,
+      'details': userModel.details,
     });
   }
 }
