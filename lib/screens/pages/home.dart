@@ -3,6 +3,7 @@ import 'package:chattiee/screens/pages/profile.dart';
 import 'package:chattiee/services/auth/constants.dart';
 import 'package:chattiee/services/checkUsers.dart';
 import 'package:chattiee/widgets/user.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -15,9 +16,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<UserModel> dataList = [];
 
+  final List searchList = [];
+  bool isSearching = false;
+
   @override
   void initState() {
     CheckUser.selfInfo();
+
     super.initState();
   }
 
@@ -25,16 +30,50 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Chattiee'),
+          title: isSearching
+              ? TextFormField(
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Name/Email',
+                  ),
+                  onChanged: (value) {
+                    searchList.clear();
+
+                    for (var element in dataList) {
+                      if (element.name
+                              .toLowerCase()
+                              .contains(value.toLowerCase()) &&
+                          element.email
+                              .toLowerCase()
+                              .contains(value.toLowerCase())) {
+                        searchList.add(value);
+                      }
+                      setState(() {
+                        searchList;
+                      });
+                    }
+                  },
+                )
+              : Text(
+                  'Chattiee',
+                  style: TextStyle(
+                    fontSize: 25,
+                  ),
+                ),
           leading: IconButton(
             onPressed: () {},
             icon: const Icon(Icons.home),
           ),
           actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
             IconButton(
                 onPressed: () {
-                  // _signOut();
+                  setState(() {
+                    isSearching = !isSearching;
+                  });
+                },
+                icon: Icon(isSearching ? CupertinoIcons.clear : Icons.search)),
+            IconButton(
+                onPressed: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -43,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ));
                 },
-                icon: const Icon(Icons.more_horiz)),
+                icon: Icon(CupertinoIcons.person)),
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -73,11 +112,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   if (dataList.isNotEmpty) {
                     return ListView.builder(
-                      itemCount: dataList.length,
+                      itemCount:
+                          isSearching ? searchList.length : dataList.length,
                       physics: const BouncingScrollPhysics(),
                       itemBuilder: (context, index) {
                         return UserWidget(
-                          user: dataList[index],
+                          user:
+                              isSearching ? searchList[index] : dataList[index],
                         );
                       },
                     );
