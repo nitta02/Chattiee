@@ -1,9 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chattiee/model/chatuserModel.dart';
 import 'package:chattiee/screens/pages/login.dart';
 import 'package:chattiee/services/auth/constants.dart';
-import 'package:chattiee/services/checkUsers.dart';
+import 'package:chattiee/services/user_Functions.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
   final UserModel userModel;
@@ -19,8 +22,12 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   List dataList = [];
   final globalKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
+    double mqHeight = MediaQuery.of(context).size.height;
+    double mqWidth = MediaQuery.of(context).size.width;
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -54,23 +61,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     height: 30,
                   ),
                   Stack(children: [
-                    CircleAvatar(
-                      minRadius: 50,
-                      child: Image.network(widget.userModel.image),
+                    //image from server
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(mqHeight * .1),
+                      child: CachedNetworkImage(
+                        width: mqWidth * .5,
+                        height: mqHeight * .2,
+                        fit: BoxFit.cover,
+                        imageUrl: widget.userModel.image,
+                        errorWidget: (context, url, error) =>
+                            const CircleAvatar(
+                                child: Icon(CupertinoIcons.person)),
+                      ),
                     ),
                     Positioned(
                       bottom: 0,
-                      top: 80,
+                      top: 140,
                       right: 0,
-                      left: 80,
+                      left: 120,
                       child: MaterialButton(
-                        onPressed: () {},
-                        child: const Icon(Icons.edit),
+                        onPressed: () {
+                          _editPicture();
+                        },
+                        child: const Icon(
+                          Icons.edit,
+                          size: 30,
+                        ),
                       ),
                     ),
                   ]),
                   const SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
                   Text(widget.userModel.name),
                   const SizedBox(
@@ -112,7 +133,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       onPressed: () {
                         if (globalKey.currentState!.validate()) {
                           globalKey.currentState!.save();
-                          CheckUser.userUpdateDetails().then((value) {
+                          UserFunctions.userUpdateDetails().then((value) {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                     content: Text('Successfully Updated')));
@@ -132,6 +153,67 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  //PICTURE EDITING FUNCTION FOR PROFILE
+  void _editPicture() {
+    showModalBottomSheet(
+      context: context,
+      elevation: 10,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5),
+      ),
+      builder: (context) {
+        return ListView(
+          shrinkWrap: true,
+          padding: const EdgeInsets.only(
+            top: 20,
+            left: 20,
+            right: 20,
+            bottom: 80,
+          ),
+          children: [
+            const Center(
+              child: Text(
+                'Pick Up from',
+                style: TextStyle(
+                  fontSize: 25,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                    onPressed: () {},
+                    child: const Icon(
+                      CupertinoIcons.camera,
+                      size: 50,
+                    )),
+                ElevatedButton(
+                    onPressed: () async {
+                      final ImagePicker picker = ImagePicker();
+// Pick an image.
+                      final XFile? image =
+                          await picker.pickImage(source: ImageSource.gallery);
+                      if (image != null) {
+                        print(image.path);
+                      }
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(
+                      Icons.browse_gallery,
+                      size: 50,
+                    )),
+              ],
+            )
+          ],
+        );
+      },
     );
   }
 }

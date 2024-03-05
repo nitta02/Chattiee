@@ -1,7 +1,10 @@
+// ignore_for_file: file_names
+
 import 'package:chattiee/model/chatuserModel.dart';
 import 'package:chattiee/services/auth/constants.dart';
+import 'package:image_picker/image_picker.dart';
 
-class CheckUser {
+class UserFunctions {
   // static User get user => auth.currentUser!;
 
   //If user is already exist
@@ -14,8 +17,6 @@ class CheckUser {
   //If new user is registering in the app
 
   static Future<void> createUser() async {
-    final time = DateTime.now().millisecondsSinceEpoch.toString();
-
     final chatUser = UserModel(
       image: user.photoURL.toString(),
       created: time,
@@ -55,5 +56,12 @@ class CheckUser {
       'name': userModel.name,
       'details': userModel.details,
     });
+  }
+
+  //For picking up the images from the gallery
+  void pickImagefromGallery() async {
+    final ImagePicker picker = ImagePicker();
+// Pick an image.
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
   }
 }

@@ -1,9 +1,9 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, unused_local_variable
 
 import 'package:chattiee/model/chatuserModel.dart';
 import 'package:chattiee/screens/pages/profile.dart';
 import 'package:chattiee/services/auth/constants.dart';
-import 'package:chattiee/services/checkUsers.dart';
+import 'package:chattiee/services/user_Functions.dart';
 import 'package:chattiee/widgets/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,13 +23,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    CheckUser.selfInfo();
+    UserFunctions.selfInfo();
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    double mqHeight = MediaQuery.of(context).size.height;
+    double mqWidth = MediaQuery.of(context).size.width;
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: WillPopScope(

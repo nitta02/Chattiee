@@ -3,7 +3,7 @@
 import 'dart:io';
 
 import 'package:chattiee/screens/pages/home.dart';
-import 'package:chattiee/services/checkUsers.dart';
+import 'package:chattiee/services/user_Functions.dart';
 import 'package:chattiee/services/dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -85,14 +85,14 @@ class _LoginScreenState extends State<LoginScreen> {
   _handleGoogleClick() {
     signInWithGoogle().then((value) async {
       if (value != null) {
-        if ((await CheckUser.userCheck())) {
+        if ((await UserFunctions.userCheck())) {
           Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => const HomeScreen(),
               ));
         } else {
-          await CheckUser.createUser().then((value) {
+          await UserFunctions.createUser().then((value) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
