@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chattiee/model/chatuserModel.dart';
 import 'package:chattiee/screens/pages/login.dart';
@@ -20,6 +22,8 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  String? userImage;
+
   List dataList = [];
   final globalKey = GlobalKey<FormState>();
 
@@ -61,31 +65,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     height: 30,
                   ),
                   Stack(children: [
-                    //image from server
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(mqHeight * .1),
-                      child: CachedNetworkImage(
-                        width: mqWidth * .5,
-                        height: mqHeight * .2,
-                        fit: BoxFit.cover,
-                        imageUrl: widget.userModel.image,
-                        errorWidget: (context, url, error) =>
-                            const CircleAvatar(
-                                child: Icon(CupertinoIcons.person)),
-                      ),
-                    ),
+                    userImage != null
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(mqHeight * .01),
+                            child: Image.file(File(userImage!),
+                                width: mqWidth * .8,
+                                height: mqHeight * .25,
+                                fit: BoxFit.fill),
+                          )
+                        :
+                        //image from server
+                        ClipRRect(
+                            borderRadius: BorderRadius.circular(mqHeight * .01),
+                            child: CachedNetworkImage(
+                              width: mqWidth * .5,
+                              height: mqHeight * .25,
+                              fit: BoxFit.cover,
+                              imageUrl: widget.userModel.image,
+                              errorWidget: (context, url, error) =>
+                                  const CircleAvatar(
+                                      child: Icon(CupertinoIcons.person)),
+                            ),
+                          ),
                     Positioned(
                       bottom: 0,
-                      top: 140,
+                      top: 170,
                       right: 0,
                       left: 120,
                       child: MaterialButton(
                         onPressed: () {
                           _editPicture();
                         },
-                        child: const Icon(
-                          Icons.edit,
-                          size: 30,
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.yellow,
+                            shape: BoxShape.circle,
+                          ),
+                          width: mqWidth * .15,
+                          height: mqHeight * .1,
+                          child: const Icon(
+                            Icons.edit,
+                            size: 25,
+                          ),
                         ),
                       ),
                     ),
@@ -189,24 +210,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      pickImagefromCamera();
+                      Navigator.pop(context);
+                    },
                     child: const Icon(
                       CupertinoIcons.camera,
                       size: 50,
                     )),
                 ElevatedButton(
-                    onPressed: () async {
-                      final ImagePicker picker = ImagePicker();
-// Pick an image.
-                      final XFile? image =
-                          await picker.pickImage(source: ImageSource.gallery);
-                      if (image != null) {
-                        print(image.path);
-                      }
+                    onPressed: () {
+                      pickImagefromGallery();
                       Navigator.pop(context);
                     },
                     child: const Icon(
-                      Icons.browse_gallery,
+                      Icons.photo_size_select_actual_outlined,
                       size: 50,
                     )),
               ],
@@ -215,5 +233,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
         );
       },
     );
+  }
+
+  //For picking up the images from the gallery
+  Future pickImagefromGallery() async {
+    final ImagePicker picker = ImagePicker();
+// Pick an image.
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      userImage = image!.path;
+    });
+  }
+
+  //For picking up the images from the camera
+  Future pickImagefromCamera() async {
+    final ImagePicker picker = ImagePicker();
+// click an image.
+    final XFile? image = await picker.pickImage(source: ImageSource.camera);
+    setState(() {
+      userImage = image!.path;
+    });
   }
 }

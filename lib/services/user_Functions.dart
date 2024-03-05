@@ -57,11 +57,4 @@ class UserFunctions {
       'details': userModel.details,
     });
   }
-
-  //For picking up the images from the gallery
-  void pickImagefromGallery() async {
-    final ImagePicker picker = ImagePicker();
-// Pick an image.
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-  }
 }
