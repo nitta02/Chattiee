@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:chattiee/screens/pages/chat_screen.dart';
+import 'package:chattiee/services/auth/constants.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chattiee/model/chatuserModel.dart';
@@ -26,6 +28,13 @@ class _UserWidgetState extends State<UserWidget> {
         vertical: 10,
       ),
       child: ListTile(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatScreen(user: userModel),
+              ));
+        },
         leading: CircleAvatar(backgroundImage: NetworkImage(widget.user.image)),
         title: Text(widget.user.name),
         subtitle: Text(widget.user.details),

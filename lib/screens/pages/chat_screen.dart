@@ -16,6 +16,21 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        leading: CircleAvatar(backgroundImage: NetworkImage(widget.user.image)),
+        title: Text(widget.user.name),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back_ios))
+        ],
+      ),
+      body: ListView(
+        children: [],
+      ),
+    );
   }
 }

@@ -82,9 +82,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                     Positioned(
                       bottom: 0,
-                      top: 210,
+                      top: 150,
                       right: 0,
-                      left: 210,
+                      left: 120,
                       child: MaterialButton(
                         onPressed: () {
                           _editPicture();
