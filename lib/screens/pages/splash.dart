@@ -52,6 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     return Scaffold(
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset('assets/images/img1.png'),
           const Text('WELCOME'),

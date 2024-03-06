@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, use_build_context_synchronously
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -8,6 +8,7 @@ import 'package:chattiee/services/auth/constants.dart';
 import 'package:chattiee/services/user_Functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -40,16 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           actions: [
             IconButton(
                 onPressed: () {
-                  auth.signOut().then((value) {
-                    Navigator.pop(context);
-
-                    Navigator.pop(context);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginScreen(),
-                        ));
-                  });
+                  signOut();
                 },
                 icon: const Icon(Icons.logout)),
           ],
@@ -70,7 +62,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             borderRadius: BorderRadius.circular(mqHeight * .01),
                             child: Image.file(File(userImage!),
                                 width: mqWidth * .8,
-                                height: mqHeight * .25,
+                                height: mqHeight * .35,
+                                filterQuality: FilterQuality.high,
                                 fit: BoxFit.fill),
                           )
                         :
@@ -89,9 +82,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                     Positioned(
                       bottom: 0,
-                      top: 170,
+                      top: 210,
                       right: 0,
-                      left: 120,
+                      left: 210,
                       child: MaterialButton(
                         onPressed: () {
                           _editPicture();
@@ -239,10 +232,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future pickImagefromGallery() async {
     final ImagePicker picker = ImagePicker();
 // Pick an image.
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    final XFile? image =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
     setState(() {
       userImage = image!.path;
     });
+    UserFunctions.userPicturUpdate(
+        File(
+          userImage!,
+        ),
+        context);
   }
 
   //For picking up the images from the camera
@@ -253,5 +252,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() {
       userImage = image!.path;
     });
+    UserFunctions.userPicturUpdate(File(userImage!), context);
+  }
+
+  Future<void> signOut() async {
+    await auth.signOut();
+    await GoogleSignIn().signOut().then((value) {
+      Navigator.pop(context);
+
+      Navigator.pop(context);
+    });
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginScreen(),
+        ));
   }
 }
