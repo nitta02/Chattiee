@@ -32,7 +32,7 @@ class _UserWidgetState extends State<UserWidget> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ChatScreen(user: userModel),
+                builder: (context) => ChatScreen(user: widget.user),
               ));
         },
         leading: CircleAvatar(backgroundImage: NetworkImage(widget.user.image)),
