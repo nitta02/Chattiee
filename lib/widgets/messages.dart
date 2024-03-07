@@ -1,0 +1,108 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:chattiee/model/messageModel.dart';
+import 'package:chattiee/services/auth/constants.dart';
+import 'package:flutter/material.dart';
+
+class Messages extends StatefulWidget {
+  final MessageModel messModel;
+  const Messages({
+    Key? key,
+    required this.messModel,
+  }) : super(key: key);
+
+  @override
+  State<Messages> createState() => _MessagesState();
+}
+
+class _MessagesState extends State<Messages> {
+  @override
+  Widget build(BuildContext context) {
+    return user.uid == widget.messModel.fromId ? blueMessage() : greenMessage();
+  }
+
+  blueMessage() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Flexible(
+          child: Container(
+            margin: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 10,
+            ),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                color: Colors.blueAccent,
+                border: Border.all(
+                  width: 0.25,
+                )),
+            child: Text(
+              widget.messModel.message,
+              style: const TextStyle(
+                fontSize: 18,
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.done_all,
+                color: Colors.blue,
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Text(widget.messModel.sent),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  greenMessage() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.done_all,
+                color: Colors.blue,
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Text(widget.messModel.sent),
+            ],
+          ),
+        ),
+        Flexible(
+          child: Container(
+            margin: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 10,
+            ),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                color: Colors.greenAccent,
+                border: Border.all(
+                  width: 0.25,
+                )),
+            child: Text(
+              widget.messModel.message,
+              style: const TextStyle(
+                fontSize: 18,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

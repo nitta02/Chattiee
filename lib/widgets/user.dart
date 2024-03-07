@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:chattiee/screens/pages/chat_screen.dart';
-import 'package:chattiee/services/auth/constants.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chattiee/model/chatuserModel.dart';

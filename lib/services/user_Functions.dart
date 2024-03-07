@@ -2,7 +2,9 @@
 
 import 'dart:io';
 import 'package:chattiee/model/chatuserModel.dart';
+import 'package:chattiee/model/messageModel.dart';
 import 'package:chattiee/services/auth/constants.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -61,7 +63,7 @@ class UserFunctions {
   }
 
   //Updating user Profile Picture
-  static Future<void> userPicturUpdate(File file , BuildContext context) async {
+  static Future<void> userPicturUpdate(File file, BuildContext context) async {
 //getting file extension
     final extension = file.path.split(".").last;
 
@@ -76,7 +78,7 @@ class UserFunctions {
         .putFile(file, SettableMetadata(contentType: 'images$extension'))
         .then((p0) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Picture Added')));
+          .showSnackBar(const SnackBar(content: Text('Picture Added')));
     });
 
     //updating the new image over the old image
@@ -85,4 +87,44 @@ class UserFunctions {
       'image': userModel.image,
     });
   }
+
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getuserAllData() {
+    return firebaseFirestore
+        .collection('users')
+        .where('id', isNotEqualTo: user.uid)
+        .snapshots();
+  }
+
+  ///****************get users messages***********/
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getuserAllMessage() {
+    return firebaseFirestore.collection('messages').snapshots();
+  }
+
+  // chats (collection) --> conversation_id (doc) --> messages (collection) --> message (doc)
+
+  // useful for getting conversation id
+  static String getConversationID(String id) => user.uid.hashCode <= id.hashCode
+      ? '${user.uid}_$id'
+      : '${id}_${user.uid}';
+
+  //   // for sending message
+  // static Future<void> sendMessage(
+  //     UserModel chatUser, String msg, Type type) async {
+  //   //message sending time (also used as id)
+  //   final time = DateTime.now().millisecondsSinceEpoch.toString();
+
+  //   //message to send
+  //   final MessageModel message = MessageModel(
+  //       toId: chatUser.id,
+  //       message: msg,
+  //       read: '',
+  //       messType: type,
+  //       fromId: user.uid,
+  //       sent: time);
+
+  //   final ref = firebaseFirestore
+  //       .collection('chats/${getConversationID(chatUser.id)}/messages/');
+  //   await ref.doc(time).set(message.toJson()).then((value) =>
+  //       sendPushNotification(chatUser, type == Type.text ? msg : 'image'));
+  // }
 }
