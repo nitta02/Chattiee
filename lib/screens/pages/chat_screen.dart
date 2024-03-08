@@ -20,6 +20,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   List<MessageModel> dataList = [];
+  final _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +36,12 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             Expanded(
               child: StreamBuilder(
-                stream: UserFunctions.getuserAllMessage(),
+                stream: UserFunctions.getuserAllMessage(widget.user),
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
                     case ConnectionState.none:
-                      const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      return SizedBox();
 
                     case ConnectionState.active:
                     case ConnectionState.done:
@@ -50,25 +49,27 @@ class _ChatScreenState extends State<ChatScreen> {
                         final data = snapshot.data?.docs;
 
                         // print("Data${jsonEncode(data![0].data())}");
-                        // dataList =
-                        //     data?.map((e) => UserModel.fromJson(e.data())).toList() ?? [];
+                        dataList = data
+                                ?.map((e) => MessageModel.fromJson(e.data()))
+                                .toList() ??
+                            [];
 
-                        dataList.clear();
-                        dataList.add(MessageModel(
-                            toId: 'Adi',
-                            read: '',
-                            messType: Type.text,
-                            message: 'Heye',
-                            fromId: user.uid,
-                            sent: '12:AM'));
+                        // dataList.clear();
+                        // dataList.add(MessageModel(
+                        //     toId: 'Adi',
+                        //     read: '',
+                        //     messType: Type.text,
+                        //     message: 'Heye',
+                        //     fromId: user.uid,
+                        //     sent: '12:AM'));
 
-                        dataList.add(MessageModel(
-                            toId: user.uid,
-                            read: '',
-                            messType: Type.text,
-                            message: 'Helloo',
-                            fromId: 'Adi',
-                            sent: '12:AM'));
+                        // dataList.add(MessageModel(
+                        //     toId: user.uid,
+                        //     read: '',
+                        //     messType: Type.text,
+                        //     message: 'Helloo',
+                        //     fromId: 'Adi',
+                        //     sent: '12:AM'));
 
                         if (dataList.isNotEmpty) {
                           return ListView.builder(
@@ -120,6 +121,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       onPressed: () {}, icon: Icon(Icons.emoji_emotions)),
                   Expanded(
                       child: TextFormField(
+                    controller: _controller,
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
                     decoration: InputDecoration(
@@ -134,7 +136,11 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              if (_controller.text.isNotEmpty) {
+                UserFunctions.sendMessage(widget.user, _controller.text);
+              }
+            },
             icon: Icon(
               Icons.send,
               size: 30,

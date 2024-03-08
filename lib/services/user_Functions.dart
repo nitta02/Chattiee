@@ -96,35 +96,40 @@ class UserFunctions {
   }
 
   ///****************get users messages***********/
-  static Stream<QuerySnapshot<Map<String, dynamic>>> getuserAllMessage() {
-    return firebaseFirestore.collection('messages').snapshots();
-  }
-
-  // chats (collection) --> conversation_id (doc) --> messages (collection) --> message (doc)
 
   // useful for getting conversation id
   static String getConversationID(String id) => user.uid.hashCode <= id.hashCode
       ? '${user.uid}_$id'
       : '${id}_${user.uid}';
 
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getuserAllMessage(
+      UserModel user) {
+    return firebaseFirestore
+        .collection('chats/${getConversationID(user.id)}/messages')
+        .snapshots();
+  }
+
+  // chats (collection) --> conversation_id (doc) --> messages (collection) --> message (doc)
+
   //   // for sending message
-  // static Future<void> sendMessage(
-  //     UserModel chatUser, String msg, Type type) async {
-  //   //message sending time (also used as id)
-  //   final time = DateTime.now().millisecondsSinceEpoch.toString();
+  static Future<void> sendMessage(
+    UserModel chatUser,
+    String msg,
+  ) async {
+    //message sending time (also used as id)
+    final time = DateTime.now().millisecondsSinceEpoch.toString();
 
-  //   //message to send
-  //   final MessageModel message = MessageModel(
-  //       toId: chatUser.id,
-  //       message: msg,
-  //       read: '',
-  //       messType: type,
-  //       fromId: user.uid,
-  //       sent: time);
+    //message to send
+    final MessageModel message = MessageModel(
+        toId: chatUser.id,
+        message: msg,
+        read: '',
+        messType: Type.text,
+        fromId: user.uid,
+        sent: time);
 
-  //   final ref = firebaseFirestore
-  //       .collection('chats/${getConversationID(chatUser.id)}/messages/');
-  //   await ref.doc(time).set(message.toJson()).then((value) =>
-  //       sendPushNotification(chatUser, type == Type.text ? msg : 'image'));
-  // }
+    final ref = firebaseFirestore
+        .collection('chats/${getConversationID(chatUser.id)}/messages/');
+    await ref.doc(time).set(message.toJson());
+  }
 }
