@@ -105,7 +105,7 @@ class UserFunctions {
   static Stream<QuerySnapshot<Map<String, dynamic>>> getuserAllMessage(
       UserModel user) {
     return firebaseFirestore
-        .collection('chats/${getConversationID(user.id)}/messages')
+        .collection('chats/${getConversationID(user.id)}/messages/')
         .snapshots();
   }
 
@@ -116,20 +116,31 @@ class UserFunctions {
     UserModel chatUser,
     String msg,
   ) async {
-    //message sending time (also used as id)
-    final time = DateTime.now().millisecondsSinceEpoch.toString();
+    try {
+      //message sending time (also used as id)
 
-    //message to send
-    final MessageModel message = MessageModel(
-        toId: chatUser.id,
-        message: msg,
-        read: '',
-        messType: Type.text,
-        fromId: user.uid,
-        sent: time);
+      //message to send
+      final Message message = Message(
+          toId: chatUser.id,
+          msg: msg,
+          read: '',
+          type: Type.text,
+          fromId: user.uid,
+          sent: time);
 
-    final ref = firebaseFirestore
-        .collection('chats/${getConversationID(chatUser.id)}/messages/');
-    await ref.doc(time).set(message.toJson());
+      final ref = firebaseFirestore
+          .collection('chats/${getConversationID(chatUser.id)}/messages/');
+      await ref.doc(time).set(message.toJson());
+    } catch (e, stackTrace) {
+      print('Error sending message: $e');
+      print('Stack trace: $stackTrace');
+      // Handle the error appropriately, e.g., show an error message to the user
+    }
+  }
+
+  ///// Date and Time function/////////////////
+  static String getTime({required BuildContext context, required String time}) {
+    final data = DateTime.fromMillisecondsSinceEpoch(int.parse(time));
+    return TimeOfDay.fromDateTime(data).format(context);
   }
 }

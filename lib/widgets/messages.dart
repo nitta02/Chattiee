@@ -1,10 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:chattiee/model/messageModel.dart';
 import 'package:chattiee/services/auth/constants.dart';
+import 'package:chattiee/services/user_Functions.dart';
 import 'package:flutter/material.dart';
 
 class Messages extends StatefulWidget {
-  final MessageModel messModel;
+  final Message messModel;
   const Messages({
     Key? key,
     required this.messModel,
@@ -37,7 +38,7 @@ class _MessagesState extends State<Messages> {
                   width: 0.25,
                 )),
             child: Text(
-              widget.messModel.message,
+              widget.messModel.msg,
               style: const TextStyle(
                 fontSize: 18,
               ),
@@ -45,17 +46,21 @@ class _MessagesState extends State<Messages> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(8.0),
           child: Row(
             children: [
-              const Icon(
-                Icons.done_all,
-                color: Colors.blue,
+              const SizedBox(
+                width: 15,
               ),
+              if (widget.messModel.read.isNotEmpty)
+                const Icon(
+                  Icons.done_all,
+                  color: Colors.blue,
+                ),
               const SizedBox(
                 width: 5,
               ),
-              Text(widget.messModel.sent),
+              Text(UserFunctions.getTime(context: context, time: time)),
             ],
           ),
         ),
@@ -71,14 +76,18 @@ class _MessagesState extends State<Messages> {
           padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
-              const Icon(
-                Icons.done_all,
-                color: Colors.blue,
-              ),
               const SizedBox(
                 width: 5,
               ),
-              Text(widget.messModel.sent),
+              if (widget.messModel.sent.isNotEmpty)
+                const Icon(
+                  Icons.done_all,
+                  color: Colors.blue,
+                ),
+              const SizedBox(
+                width: 5,
+              ),
+              Text(UserFunctions.getTime(context: context, time: time)),
             ],
           ),
         ),
@@ -95,7 +104,7 @@ class _MessagesState extends State<Messages> {
                   width: 0.25,
                 )),
             child: Text(
-              widget.messModel.message,
+              widget.messModel.msg,
               style: const TextStyle(
                 fontSize: 18,
               ),

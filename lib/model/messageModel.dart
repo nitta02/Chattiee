@@ -1,26 +1,25 @@
-class MessageModel {
-  MessageModel({
+class Message {
+  Message({
     required this.toId,
+    required this.msg,
     required this.read,
-    required this.messType,
-    required this.message,
+    required this.type,
     required this.fromId,
     required this.sent,
   });
+
   late final String toId;
+  late final String msg;
   late final String read;
-  late final Type messType;
-  late final String message;
   late final String fromId;
   late final String sent;
+  late final Type type;
 
-  MessageModel.fromJson(Map<String, dynamic> json) {
+  Message.fromJson(Map<String, dynamic> json) {
     toId = json['toId'].toString();
+    msg = json['msg'].toString();
     read = json['read'].toString();
-    messType = json['mess_type'].toString() == Type.images.name
-        ? Type.images
-        : Type.text;
-    message = json['message'].toString();
+    type = json['type'].toString() == Type.image.name ? Type.image : Type.text;
     fromId = json['fromId'].toString();
     sent = json['sent'].toString();
   }
@@ -28,13 +27,13 @@ class MessageModel {
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['toId'] = toId;
+    data['msg'] = msg;
     data['read'] = read;
-    data['mess_type'] = messType;
-    data['message'] = message;
+    data['type'] = type.name;
     data['fromId'] = fromId;
     data['sent'] = sent;
     return data;
   }
 }
 
-enum Type { text, images }
+enum Type { text, image }
