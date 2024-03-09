@@ -2,10 +2,12 @@
 
 import 'package:chattiee/model/chatuserModel.dart';
 import 'package:chattiee/model/messageModel.dart';
+// ignore: unused_import
 import 'package:chattiee/services/auth/constants.dart';
 import 'package:chattiee/services/user_Functions.dart';
 import 'package:chattiee/widgets/messages.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ChatScreen extends StatefulWidget {
   final UserModel user;
@@ -23,6 +25,15 @@ class _ChatScreenState extends State<ChatScreen> {
   final _controller = TextEditingController();
 
   @override
+  void initState() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.transparent));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -32,70 +43,73 @@ class _ChatScreenState extends State<ChatScreen> {
             automaticallyImplyLeading: false,
             flexibleSpace: flexibleAppbar(),
           ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: StreamBuilder(
-                  stream: UserFunctions.getuserAllMessage(widget.user),
-                  builder: (context, snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                      case ConnectionState.none:
-                        return const SizedBox();
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: StreamBuilder(
+                    stream: UserFunctions.getuserAllMessage(widget.user),
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                        case ConnectionState.none:
+                          return const SizedBox();
 
-                      case ConnectionState.active:
-                      case ConnectionState.done:
-                        if (snapshot.hasData) {
-                          final data = snapshot.data?.docs;
+                        case ConnectionState.active:
+                        case ConnectionState.done:
+                          if (snapshot.hasData) {
+                            final data = snapshot.data?.docs;
 
-                          // print("Data${jsonEncode(data![0].data())}");
-                          dataList = data
-                                  ?.map((e) => Message.fromJson(e.data()))
-                                  .toList() ??
-                              [];
+                            // print("Data${jsonEncode(data![0].data())}");
+                            dataList = data
+                                    ?.map((e) => Message.fromJson(e.data()))
+                                    .toList() ??
+                                [];
 
-                          // dataList.clear();
-                          // dataList.add(MessageModel(
-                          //     toId: 'Adi',
-                          //     read: '',
-                          //     messType: Type.text,
-                          //     message: 'Heye',
-                          //     fromId: user.uid,
-                          //     sent: '12:AM'));
+                            // dataList.clear();
+                            // dataList.add(MessageModel(
+                            //     toId: 'Adi',
+                            //     read: '',
+                            //     messType: Type.text,
+                            //     message: 'Heye',
+                            //     fromId: user.uid,
+                            //     sent: '12:AM'));
 
-                          // dataList.add(MessageModel(
-                          //     toId: user.uid,
-                          //     read: '',
-                          //     messType: Type.text,
-                          //     message: 'Helloo',
-                          //     fromId: 'Adi',
-                          //     sent: '12:AM'));
+                            // dataList.add(MessageModel(
+                            //     toId: user.uid,
+                            //     read: '',
+                            //     messType: Type.text,
+                            //     message: 'Helloo',
+                            //     fromId: 'Adi',
+                            //     sent: '12:AM'));
 
-                          if (dataList.isNotEmpty) {
-                            return ListView.builder(
-                              itemCount: dataList.length,
-                              physics: const BouncingScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return Messages(messModel: dataList[index]);
-                              },
-                            );
+                            if (dataList.isNotEmpty) {
+                              return ListView.builder(
+                                itemCount: dataList.length,
+                                physics: const BouncingScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return Messages(messModel: dataList[index]);
+                                },
+                              );
+                            }
                           }
-                        }
-                    }
-                    return const Center(
-                      child: Text(
-                        'Hey, 🖐',
-                        style: TextStyle(
-                          fontSize: 25,
+                      }
+                      return const Center(
+                        child: Text(
+                          'Hey, 🖐',
+                          style: TextStyle(
+                            fontSize: 25,
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
-              ),
-              userMessageInput(),
-            ],
+                userMessageInput(),
+              ],
+            ),
           ),
         ),
       ),
@@ -109,6 +123,9 @@ class _ChatScreenState extends State<ChatScreen> {
         children: [
           Expanded(
             child: Card(
+              margin: const EdgeInsets.symmetric(
+                horizontal: 10,
+              ),
               elevation: 10,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
@@ -149,13 +166,13 @@ class _ChatScreenState extends State<ChatScreen> {
               }
             },
             minWidth: 0,
-            padding: EdgeInsets.all(5),
-            shape: CircleBorder(),
-            child: Icon(
+            padding: const EdgeInsets.all(5),
+            shape: const CircleBorder(),
+            color: Colors.green,
+            child: const Icon(
               Icons.send,
               size: 30,
             ),
-            color: Colors.green,
           ),
         ],
       ),

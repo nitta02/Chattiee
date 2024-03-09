@@ -22,6 +22,9 @@ class _MessagesState extends State<Messages> {
   }
 
   blueMessage() {
+    // if (widget.messModel.read.isEmpty) {
+    //   UserFunctions.readMessage(widget.messModel);
+    // }
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -46,7 +49,7 @@ class _MessagesState extends State<Messages> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
               const SizedBox(
@@ -69,6 +72,9 @@ class _MessagesState extends State<Messages> {
   }
 
   greenMessage() {
+    if (widget.messModel.read.isEmpty) {
+      UserFunctions.readMessage(widget.messModel);
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

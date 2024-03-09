@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, avoid_print
 
 import 'dart:io';
 import 'package:chattiee/model/chatuserModel.dart';
@@ -142,5 +142,18 @@ class UserFunctions {
   static String getTime({required BuildContext context, required String time}) {
     final data = DateTime.fromMillisecondsSinceEpoch(int.parse(time));
     return TimeOfDay.fromDateTime(data).format(context);
+  }
+
+  static Future<void> readMessage(Message message) async {
+    try {
+      await firebaseFirestore
+          .collection('chats/${getConversationID(message.fromId)}/messages/')
+          .doc(message.sent)
+          .update(
+              {'read': DateTime.fromMillisecondsSinceEpoch(int.parse(time))});
+    } catch (e) {
+      print('Error updating message: $e');
+      // Handle the error gracefully, e.g., show an error message to the user
+    }
   }
 }
