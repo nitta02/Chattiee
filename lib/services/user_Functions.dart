@@ -156,4 +156,14 @@ class UserFunctions {
       // Handle the error gracefully, e.g., show an error message to the user
     }
   }
+
+  //get only last message of a specific chat
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getLastMessage(
+      UserModel user) {
+    return firebaseFirestore
+        .collection('chats/${getConversationID(user.id)}/messages/')
+        .orderBy('sent', descending: true)
+        .limit(1)
+        .snapshots();
+  }
 }
