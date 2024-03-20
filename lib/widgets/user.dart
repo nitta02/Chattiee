@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:chattiee/model/messageModel.dart';
 import 'package:chattiee/screens/pages/chat_screen.dart';
+import 'package:chattiee/services/auth/constants.dart';
 import 'package:chattiee/services/user_Functions.dart';
 import 'package:flutter/material.dart';
 
@@ -51,22 +52,28 @@ class _UserWidgetState extends State<UserWidget> {
               leading: CircleAvatar(
                   backgroundImage: NetworkImage(widget.user.image)),
               title: Text(widget.user.name),
-              subtitle: Text(_message!=null? _message!.msg:widget.user.details,
-              maxLines: 2,),
-              trailing: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    height: 15,
-                    width: 15,
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                  const Text('12:00 AM'),
-                ],
+              subtitle: Text(
+                _message != null ? _message!.msg : widget.user.details,
+                maxLines: 2,
               ),
+              trailing: _message == null
+                  ? null
+                  : _message!.read.isEmpty && _message!.fromId != user.uid
+                      ? Container(
+                          height: 15,
+                          width: 15,
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        )
+                      : Text(
+                          UserFunctions.getLastMessTime(
+                              context: context, time: time),
+                          style: const TextStyle(
+                            color: Colors.black45,
+                          ),
+                        ),
             );
           },
         ));
