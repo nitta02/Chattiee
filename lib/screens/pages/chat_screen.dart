@@ -1,11 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'dart:io';
+
 import 'package:chattiee/model/chatuserModel.dart';
 import 'package:chattiee/model/messageModel.dart';
 // ignore: unused_import
 import 'package:chattiee/services/auth/constants.dart';
 import 'package:chattiee/services/user_Functions.dart';
 import 'package:chattiee/widgets/messages.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -21,8 +24,12 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  bool _showEmoji = false;
+
   List<Message> dataList = [];
   final _controller = TextEditingController();
+
+  final emojiController = TextEditingController();
 
   @override
   void initState() {
@@ -68,23 +75,6 @@ class _ChatScreenState extends State<ChatScreen> {
                                     .toList() ??
                                 [];
 
-                            // dataList.clear();
-                            // dataList.add(MessageModel(
-                            //     toId: 'Adi',
-                            //     read: '',
-                            //     messType: Type.text,
-                            //     message: 'Heye',
-                            //     fromId: user.uid,
-                            //     sent: '12:AM'));
-
-                            // dataList.add(MessageModel(
-                            //     toId: user.uid,
-                            //     read: '',
-                            //     messType: Type.text,
-                            //     message: 'Helloo',
-                            //     fromId: 'Adi',
-                            //     sent: '12:AM'));
-
                             if (dataList.isNotEmpty) {
                               return ListView.builder(
                                 itemCount: dataList.length,
@@ -108,6 +98,34 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ),
                 userMessageInput(),
+                SizedBox(
+                    height: 150,
+                    child: EmojiPicker(
+                      // onEmojiSelected: (
+                      //   Category category, Emoji emoji) {
+                      //   // Do something when emoji is tapped (optional)
+                      // },
+                      // onBackspacePressed: () {
+                      //   // Do something when the user taps the backspace button (optional)
+                      //   // Set it to null to hide the Backspace-Button
+                      // },
+                      textEditingController:
+                          emojiController, // pass here the same [TextEditingController] that is connected to your input field, usually a [TextFormField]
+                      config: Config(
+                        height: 256,
+                        // bgColor: const Color(0xFFF2F2F2),
+                        // checkPlatformCompatibility: true,
+                        emojiViewConfig: EmojiViewConfig(
+                          // Issue: https://github.com/flutter/flutter/issues/28894
+                          emojiSizeMax: 28 * (Platform.isIOS ? 1.20 : 1.0),
+                        ),
+                        // swapCategoryAndBottomBar: false,
+                        // skinToneConfig: const SkinToneConfig(),
+                        // categoryViewConfig: const CategoryViewConfig(),
+                        // bottomActionBarConfig: const BottomActionBarConfig(),
+                        // searchViewConfig: const SearchViewConfig(),
+                      ),
+                    ))
               ],
             ),
           ),
@@ -135,7 +153,11 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Row(
                 children: [
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          _showEmoji = !_showEmoji;
+                        });
+                      },
                       icon: const Icon(
                         Icons.emoji_emotions,
                         color: Colors.blue,
