@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chattiee/model/messageModel.dart';
 import 'package:chattiee/services/auth/constants.dart';
 import 'package:chattiee/services/user_Functions.dart';
@@ -30,22 +31,38 @@ class _MessagesState extends State<Messages> {
       children: [
         Flexible(
           child: Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: 10,
-            ),
-            padding: const EdgeInsets.all(10),
+            padding:
+                EdgeInsets.all(widget.messModel.type == Type.image ? 30 : 30),
+            margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
             decoration: BoxDecoration(
-                color: Colors.blueAccent,
-                border: Border.all(
-                  width: 0.25,
-                )),
-            child: Text(
-              widget.messModel.msg,
-              style: const TextStyle(
-                fontSize: 18,
-              ),
-            ),
+                color: const Color.fromARGB(255, 164, 191, 249),
+                border: Border.all(color: Colors.blue),
+                //making borders curved
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                    bottomLeft: Radius.circular(30))),
+            child: widget.messModel.type == Type.text
+                ?
+                //show text
+                Text(
+                    widget.messModel.msg,
+                    style: const TextStyle(fontSize: 15, color: Colors.black87),
+                  )
+                :
+                //show image
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: CachedNetworkImage(
+                      imageUrl: widget.messModel.msg,
+                      placeholder: (context, url) => const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.image, size: 70),
+                    ),
+                  ),
           ),
         ),
         Padding(
@@ -97,24 +114,41 @@ class _MessagesState extends State<Messages> {
             ],
           ),
         ),
+        //message content
         Flexible(
           child: Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: 10,
-            ),
-            padding: const EdgeInsets.all(10),
+            padding:
+                EdgeInsets.all(widget.messModel.type == Type.image ? 30 : 30),
+            margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
             decoration: BoxDecoration(
-                color: Colors.greenAccent,
-                border: Border.all(
-                  width: 0.25,
-                )),
-            child: Text(
-              widget.messModel.msg,
-              style: const TextStyle(
-                fontSize: 18,
-              ),
-            ),
+                color: const Color.fromARGB(255, 218, 255, 176),
+                border: Border.all(color: Colors.lightGreen),
+                //making borders curved
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                    bottomLeft: Radius.circular(30))),
+            child: widget.messModel.type == Type.text
+                ?
+                //show text
+                Text(
+                    widget.messModel.msg,
+                    style: const TextStyle(fontSize: 15, color: Colors.black87),
+                  )
+                :
+                //show image
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: CachedNetworkImage(
+                      imageUrl: widget.messModel.msg,
+                      placeholder: (context, url) => const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.image, size: 70),
+                    ),
+                  ),
           ),
         ),
       ],

@@ -1,5 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
+// ignore_for_file: public_member_api_docs, sort_constructors_first, use_build_context_synchronously
 import 'dart:io';
 
 import 'package:chattiee/model/chatuserModel.dart';
@@ -10,6 +9,7 @@ import 'package:chattiee/services/user_Functions.dart';
 import 'package:chattiee/widgets/messages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ChatScreen extends StatefulWidget {
   final UserModel user;
@@ -145,7 +145,15 @@ class _ChatScreenState extends State<ChatScreen> {
                   )),
                   IconButton(onPressed: () {}, icon: const Icon(Icons.image)),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        final ImagePicker picker = ImagePicker();
+// click an image.
+                        final XFile? image =
+                            await picker.pickImage(source: ImageSource.camera);
+
+                        await UserFunctions.messageImages(
+                            widget.user, File(image!.path), context);
+                      },
                       icon: const Icon(Icons.camera_alt_outlined)),
                 ],
               ),
@@ -154,7 +162,8 @@ class _ChatScreenState extends State<ChatScreen> {
           MaterialButton(
             onPressed: () {
               if (_controller.text.isNotEmpty) {
-                UserFunctions.sendMessage(widget.user, _controller.text);
+                UserFunctions.sendMessage(
+                    widget.user, _controller.text, Type.text);
                 _controller.text = '';
               }
             },

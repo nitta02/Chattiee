@@ -113,9 +113,7 @@ class UserFunctions {
 
   //   // for sending message
   static Future<void> sendMessage(
-    UserModel chatUser,
-    String msg,
-  ) async {
+      UserModel chatUser, String msg, Type type) async {
     try {
       //message sending time (also used as id)
 
@@ -124,7 +122,7 @@ class UserFunctions {
           toId: chatUser.id,
           msg: msg,
           read: '',
-          type: Type.text,
+          type: type,
           fromId: user.uid,
           sent: time);
 
@@ -212,5 +210,29 @@ class UserFunctions {
         .orderBy('sent', descending: true)
         .limit(1)
         .snapshots();
+  }
+
+  //Adding user Message Images
+
+  static Future<void> messageImages(
+      UserModel userModel, File file, BuildContext context) async {
+//getting file extension
+    final extension = file.path.split(".").last;
+
+//making path to store the image file
+    final ref = firebaseStorage.ref().child(
+        'Profile_Picture/${getConversationID(userModel.id)}/${DateTime.now().millisecondsSinceEpoch}.$extension');
+
+    //uploading and save the new image
+    await ref
+        .putFile(file, SettableMetadata(contentType: 'images$extension'))
+        .then((p0) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Picture Sent')));
+    });
+
+    //updating the new image over the old image
+    final imageUrl = await ref.getDownloadURL();
+    UserFunctions.sendMessage(userModel, imageUrl, Type.image);
   }
 }
