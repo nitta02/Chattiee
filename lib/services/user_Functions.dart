@@ -237,4 +237,49 @@ class UserFunctions {
     final imageUrl = await ref.getDownloadURL();
     await UserFunctions.sendMessage(userModel, imageUrl, Type.image);
   }
+
+  // for getting specific user info
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getUserInfo(
+      UserModel chatUser) {
+    return firebaseFirestore
+        .collection('users')
+        .where('id', isEqualTo: chatUser.id)
+        .snapshots();
+  }
+
+  // update online or last active status of user
+  static Future<void> updateActiveStatus(bool isOnline) async {
+    firebaseFirestore.collection('users').doc(user.uid).update({
+      'is_online': isOnline,
+      'last_active': DateTime.now().millisecondsSinceEpoch.toString(),
+      'push_token': userModel.tokenPush,
+    });
+  }
+
+  //get formatted last active time of user in chat screen
+  static String getLastActiveTime(
+      {required BuildContext context, required String lastActive}) {
+    final int i = int.tryParse(lastActive) ?? -1;
+
+    //if time is not available then return below statement
+    if (i == -1) return 'Last seen not available';
+
+    DateTime time = DateTime.fromMillisecondsSinceEpoch(i);
+    DateTime now = DateTime.now();
+
+    String formattedTime = TimeOfDay.fromDateTime(time).format(context);
+    if (time.day == now.day &&
+        time.month == now.month &&
+        time.year == time.year) {
+      return 'Last seen today at $formattedTime';
+    }
+
+    if ((now.difference(time).inHours / 24).round() == 1) {
+      return 'Last seen yesterday at $formattedTime';
+    }
+
+    String month = _getMonth(time);
+
+    return 'Last seen on ${time.day} $month on $formattedTime';
+  }
 }

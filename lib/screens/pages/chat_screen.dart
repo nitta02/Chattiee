@@ -1,12 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, use_build_context_synchronously
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chattiee/model/chatuserModel.dart';
 import 'package:chattiee/model/messageModel.dart';
+import 'package:chattiee/screens/pages/profile.dart';
 // ignore: unused_import
 import 'package:chattiee/services/auth/constants.dart';
 import 'package:chattiee/services/user_Functions.dart';
 import 'package:chattiee/widgets/messages.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -48,7 +51,7 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            flexibleSpace: flexibleAppbar(),
+            flexibleSpace: _appBar(),
           ),
           body: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -217,38 +220,78 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Widget flexibleAppbar() {
+  // app bar widget
+  Widget _appBar() {
     return InkWell(
-      onTap: () {},
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(Icons.arrow_back_ios)),
-          CircleAvatar(
-            backgroundImage: NetworkImage(widget.user.image),
-            minRadius: 35,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.user.name,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              Text('Last Active: ${widget.user.lastActive}'),
-            ],
-          ),
-        ],
-      ),
-    );
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => ProfileScreen(userModel: widget.user)));
+        },
+        child: StreamBuilder(
+            stream: UserFunctions.getUserInfo(widget.user),
+            builder: (context, snapshot) {
+              final data = snapshot.data?.docs;
+              final list =
+                  data?.map((e) => UserModel.fromJson(e.data())).toList() ?? [];
+
+              return Row(
+                children: [
+                  //back button
+                  IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon:
+                          const Icon(Icons.arrow_back, color: Colors.black54)),
+
+                  //user profile picture
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(3),
+                    child: CachedNetworkImage(
+                      width: 35,
+                      height: 35,
+                      imageUrl:
+                          list.isNotEmpty ? list[0].image : widget.user.image,
+                      errorWidget: (context, url, error) => const CircleAvatar(
+                          child: Icon(CupertinoIcons.person)),
+                    ),
+                  ),
+
+                  //for adding some space
+                  const SizedBox(width: 10),
+
+                  //user name & last seen time
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      //user name
+                      Text(list.isNotEmpty ? list[0].name : widget.user.name,
+                          style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w500)),
+
+                      //for adding some space
+                      const SizedBox(height: 2),
+
+                      //last seen time of user
+                      Text(
+                          list.isNotEmpty
+                              ? list[0].isOnline
+                                  ? 'Online'
+                                  : UserFunctions.getLastActiveTime(
+                                      context: context,
+                                      lastActive: list[0].lastActive)
+                              : UserFunctions.getLastActiveTime(
+                                  context: context,
+                                  lastActive: widget.user.lastActive),
+                          style: const TextStyle(
+                              fontSize: 13, color: Colors.black54)),
+                    ],
+                  )
+                ],
+              );
+            }));
   }
 }
