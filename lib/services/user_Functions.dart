@@ -75,7 +75,7 @@ class UserFunctions {
 
     //uploading and save the new image
     await ref
-        .putFile(file, SettableMetadata(contentType: 'images$extension'))
+        .putFile(file, SettableMetadata(contentType: 'images/$extension'))
         .then((p0) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Picture Added')));
@@ -106,6 +106,7 @@ class UserFunctions {
       UserModel user) {
     return firebaseFirestore
         .collection('chats/${getConversationID(user.id)}/messages/')
+        .orderBy('sent', descending: true)
         .snapshots();
   }
 
@@ -221,11 +222,12 @@ class UserFunctions {
 
 //making path to store the image file
     final ref = firebaseStorage.ref().child(
-        'Profile_Picture/${getConversationID(userModel.id)}/${DateTime.now().millisecondsSinceEpoch}.$extension');
+        'message_images/${getConversationID(userModel.id)}/${DateTime.now().millisecondsSinceEpoch}.$extension');
 
     //uploading and save the new image
     await ref
-        .putFile(file, SettableMetadata(contentType: 'images$extension'))
+        .putFile(
+            file, SettableMetadata(contentType: 'message_images/$extension'))
         .then((p0) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Picture Sent')));
@@ -233,6 +235,6 @@ class UserFunctions {
 
     //updating the new image over the old image
     final imageUrl = await ref.getDownloadURL();
-    UserFunctions.sendMessage(userModel, imageUrl, Type.image);
+    await UserFunctions.sendMessage(userModel, imageUrl, Type.image);
   }
 }

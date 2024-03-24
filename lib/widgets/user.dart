@@ -53,7 +53,11 @@ class _UserWidgetState extends State<UserWidget> {
                   backgroundImage: NetworkImage(widget.user.image)),
               title: Text(widget.user.name),
               subtitle: Text(
-                _message != null ? _message!.msg : widget.user.details,
+                _message != null
+                    ? _message!.type == Type.image
+                        ? 'Image'
+                        : _message!.msg
+                    : widget.user.details,
                 maxLines: 2,
               ),
               trailing: _message == null

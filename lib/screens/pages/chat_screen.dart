@@ -24,6 +24,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   bool _showEmoji = false;
+  bool _pictureUploaded = false;
 
   List<Message> dataList = [];
   final _controller = TextEditingController();
@@ -76,6 +77,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
                             if (dataList.isNotEmpty) {
                               return ListView.builder(
+                                reverse: true,
                                 itemCount: dataList.length,
                                 physics: const BouncingScrollPhysics(),
                                 itemBuilder: (context, index) {
@@ -96,6 +98,16 @@ class _ChatScreenState extends State<ChatScreen> {
                     },
                   ),
                 ),
+                if (_pictureUploaded)
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: CircularProgressIndicator(
+                          color: Colors.black45,
+                          strokeWidth: 1,
+                        )),
+                  ),
                 userMessageInput(),
               ],
             ),
@@ -143,16 +155,40 @@ class _ChatScreenState extends State<ChatScreen> {
                       hintText: 'Type Here',
                     ),
                   )),
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.image)),
+                  IconButton(
+                      onPressed: () async {
+                        final ImagePicker picker = ImagePicker();
+// click an image.
+                        final List<XFile> images =
+                            await picker.pickMultiImage(imageQuality: 50);
+                        for (var i in images) {
+                          setState(() {
+                            _pictureUploaded = true;
+                          });
+                          await UserFunctions.messageImages(
+                              widget.user, File(i.path), context);
+                          setState(() {
+                            _pictureUploaded = false;
+                          });
+                        }
+                      },
+                      icon: const Icon(Icons.image)),
                   IconButton(
                       onPressed: () async {
                         final ImagePicker picker = ImagePicker();
 // click an image.
                         final XFile? image =
                             await picker.pickImage(source: ImageSource.camera);
-
-                        await UserFunctions.messageImages(
-                            widget.user, File(image!.path), context);
+                        if (image != null) {
+                          setState(() {
+                            _pictureUploaded = true;
+                          });
+                          await UserFunctions.messageImages(
+                              widget.user, File(image!.path), context);
+                        }
+                        setState(() {
+                          _pictureUploaded = false;
+                        });
                       },
                       icon: const Icon(Icons.camera_alt_outlined)),
                 ],

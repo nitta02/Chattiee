@@ -19,7 +19,7 @@ class Messages extends StatefulWidget {
 class _MessagesState extends State<Messages> {
   @override
   Widget build(BuildContext context) {
-    return user.uid == widget.messModel.fromId ? blueMessage() : greenMessage();
+    return user.uid == widget.messModel.fromId ? greenMessage() : blueMessage();
   }
 
   blueMessage() {
@@ -33,7 +33,7 @@ class _MessagesState extends State<Messages> {
           child: Container(
             padding:
                 EdgeInsets.all(widget.messModel.type == Type.image ? 30 : 30),
-            margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 164, 191, 249),
                 border: Border.all(color: Colors.blue),
@@ -119,15 +119,15 @@ class _MessagesState extends State<Messages> {
           child: Container(
             padding:
                 EdgeInsets.all(widget.messModel.type == Type.image ? 30 : 30),
-            margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 218, 255, 176),
                 border: Border.all(color: Colors.lightGreen),
                 //making borders curved
                 borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                    bottomLeft: Radius.circular(30))),
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                    bottomLeft: Radius.circular(20))),
             child: widget.messModel.type == Type.text
                 ?
                 //show text
