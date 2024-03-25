@@ -7,6 +7,7 @@ import 'package:chattiee/services/user_Functions.dart';
 import 'package:chattiee/widgets/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,7 +25,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     UserFunctions.selfInfo();
+    SystemChannels.lifecycle.setMessageHandler((message) {
+      // print(message);
+      if (message.toString().contains('resume')) {
+        UserFunctions.updateActiveStatus(true);
+      }
 
+      if (message.toString().contains('pause')) {
+        UserFunctions.updateActiveStatus(false);
+      }
+      return Future.value(message);
+    });
     super.initState();
   }
 
