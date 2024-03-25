@@ -187,7 +187,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             _pictureUploaded = true;
                           });
                           await UserFunctions.messageImages(
-                              widget.user, File(image!.path), context);
+                              widget.user, File(image.path), context);
                         }
                         setState(() {
                           _pictureUploaded = false;

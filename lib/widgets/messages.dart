@@ -103,9 +103,15 @@ class _MessagesState extends State<Messages> {
                 width: 5,
               ),
               if (widget.messModel.sent.isNotEmpty)
-                const Icon(
-                  Icons.done_all,
-                  color: Colors.blue,
+                // const Icon(
+                //   Icons.send,
+                //   color: Colors.blue,
+                // ),
+                CircleAvatar(
+                  // backgroundImage: NetworkImage(userModel.image),
+                  radius: 20,
+                  // backgroundImage: NetworkImage(userModel.image),
+                  child: Image.network(userModel.image),
                 ),
               const SizedBox(
                 width: 5,
