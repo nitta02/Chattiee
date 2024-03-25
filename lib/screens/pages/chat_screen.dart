@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chattiee/model/chatuserModel.dart';
 import 'package:chattiee/model/messageModel.dart';
 import 'package:chattiee/screens/pages/profile.dart';
+import 'package:chattiee/screens/pages/view_profile.dart';
 // ignore: unused_import
 import 'package:chattiee/services/auth/constants.dart';
 import 'package:chattiee/services/user_Functions.dart';
@@ -227,7 +228,7 @@ class _ChatScreenState extends State<ChatScreen> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (_) => ProfileScreen(userModel: widget.user)));
+                  builder: (_) => ViewProfileScreen(userModel: widget.user)));
         },
         child: StreamBuilder(
             stream: UserFunctions.getUserInfo(widget.user),

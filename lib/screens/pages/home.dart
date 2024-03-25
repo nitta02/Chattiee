@@ -27,12 +27,15 @@ class _HomeScreenState extends State<HomeScreen> {
     UserFunctions.selfInfo();
     SystemChannels.lifecycle.setMessageHandler((message) {
       // print(message);
+      if (auth.currentUser!=null) {
+        
       if (message.toString().contains('resume')) {
         UserFunctions.updateActiveStatus(true);
       }
 
       if (message.toString().contains('pause')) {
         UserFunctions.updateActiveStatus(false);
+      }
       }
       return Future.value(message);
     });
