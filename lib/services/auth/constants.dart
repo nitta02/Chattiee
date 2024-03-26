@@ -1,6 +1,7 @@
 import 'package:chattiee/model/chatuserModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,7 @@ final time = DateTime.now().millisecondsSinceEpoch.toString();
 
 FirebaseStorage firebaseStorage = FirebaseStorage.instance;
 
-
 //global object for accessing device screen size
 late Size mq;
+
+FirebaseMessaging messaging = FirebaseMessaging.instance;
