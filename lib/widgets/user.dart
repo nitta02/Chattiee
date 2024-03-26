@@ -3,6 +3,7 @@ import 'package:chattiee/model/messageModel.dart';
 import 'package:chattiee/screens/pages/chat_screen.dart';
 import 'package:chattiee/services/auth/constants.dart';
 import 'package:chattiee/services/user_Functions.dart';
+import 'package:chattiee/widgets/alart_dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chattiee/model/chatuserModel.dart';
@@ -49,8 +50,16 @@ class _UserWidgetState extends State<UserWidget> {
                       builder: (context) => ChatScreen(user: widget.user),
                     ));
               },
-              leading: CircleAvatar(
-                  backgroundImage: NetworkImage(widget.user.image)),
+              leading: InkWell(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => ProfileAlartDialog(user: widget.user),
+                  );
+                },
+                child: CircleAvatar(
+                    backgroundImage: NetworkImage(widget.user.image)),
+              ),
               title: Text(widget.user.name),
               subtitle: Text(
                 _message != null

@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chattiee/model/chatuserModel.dart';
 import 'package:chattiee/model/messageModel.dart';
-import 'package:chattiee/screens/pages/profile.dart';
 import 'package:chattiee/screens/pages/view_profile.dart';
 // ignore: unused_import
 import 'package:chattiee/services/auth/constants.dart';
