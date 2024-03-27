@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:chattiee/model/chatuserModel.dart';
 import 'package:chattiee/model/messageModel.dart';
 import 'package:chattiee/services/auth/constants.dart';
+import 'package:chattiee/services/helper/notification.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -45,9 +46,11 @@ class UserFunctions {
         .collection('users')
         .doc(user.uid)
         .get()
-        .then((value) {
+        .then((value) async {
       if (value.exists) {
         userModel = UserModel.fromJson(value.data()!);
+        await NotificationFunctions.getMessagingToken();
+        updateActiveStatus(true);
       } else {
         createUser().then((value) => selfInfo());
       }
@@ -256,7 +259,7 @@ class UserFunctions {
     firebaseFirestore.collection('users').doc(user.uid).update({
       'is_online': isOnline,
       'last_active': DateTime.now().millisecondsSinceEpoch.toString(),
-      'push_token': userModel.tokenPush,
+      'tokenPush': userModel.tokenPush,
     });
   }
 
