@@ -2,6 +2,7 @@
 import 'package:chattiee/model/messageModel.dart';
 import 'package:chattiee/screens/pages/chat_screen.dart';
 import 'package:chattiee/services/auth/constants.dart';
+import 'package:chattiee/services/helper/date&time.dart';
 import 'package:chattiee/services/user_Functions.dart';
 import 'package:chattiee/widgets/alart_dialog.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +82,7 @@ class _UserWidgetState extends State<UserWidget> {
                           ),
                         )
                       : Text(
-                          UserFunctions.getLastMessTime(
+                          DateTimeFunctions.getLastMessTime(
                               context: context, time: time),
                           style: const TextStyle(
                             color: Colors.black45,

@@ -2,6 +2,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chattiee/model/messageModel.dart';
 import 'package:chattiee/services/auth/constants.dart';
+import 'package:chattiee/services/helper/date&time.dart';
 import 'package:chattiee/services/user_Functions.dart';
 import 'package:flutter/material.dart';
 
@@ -80,7 +81,7 @@ class _MessagesState extends State<Messages> {
               const SizedBox(
                 width: 5,
               ),
-              Text(UserFunctions.getTime(context: context, time: time)),
+              Text(DateTimeFunctions.getTime(context: context, time: time)),
             ],
           ),
         ),
@@ -116,7 +117,7 @@ class _MessagesState extends State<Messages> {
               const SizedBox(
                 width: 5,
               ),
-              Text(UserFunctions.getTime(context: context, time: time)),
+              Text(DateTimeFunctions.getTime(context: context, time: time)),
             ],
           ),
         ),

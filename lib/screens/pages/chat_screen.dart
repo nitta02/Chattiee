@@ -7,6 +7,7 @@ import 'package:chattiee/model/messageModel.dart';
 import 'package:chattiee/screens/pages/view_profile.dart';
 // ignore: unused_import
 import 'package:chattiee/services/auth/constants.dart';
+import 'package:chattiee/services/helper/date&time.dart';
 import 'package:chattiee/services/user_Functions.dart';
 import 'package:chattiee/widgets/messages.dart';
 import 'package:flutter/cupertino.dart';
@@ -280,10 +281,10 @@ class _ChatScreenState extends State<ChatScreen> {
                           list.isNotEmpty
                               ? list[0].isOnline
                                   ? 'Online'
-                                  : UserFunctions.getLastActiveTime(
+                                  : DateTimeFunctions.getLastActiveTime(
                                       context: context,
                                       lastActive: list[0].lastActive)
-                              : UserFunctions.getLastActiveTime(
+                              : DateTimeFunctions.getLastActiveTime(
                                   context: context,
                                   lastActive: widget.user.lastActive),
                           style: const TextStyle(
