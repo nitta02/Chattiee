@@ -132,16 +132,15 @@ class UserFunctions {
 
       final ref = firebaseFirestore
           .collection('chats/${getConversationID(chatUser.id)}/messages/');
-      await ref.doc(time).set(message.toJson());
+      await ref.doc(time).set(message.toJson()).then((value) =>
+          NotificationFunctions.sendPushNotification(
+              chatUser, type == Type.text ? msg : 'image'));
     } catch (e, stackTrace) {
       print('Error sending message: $e');
       print('Stack trace: $stackTrace');
       // Handle the error appropriately, e.g., show an error message to the user
     }
   }
-
-
-
 
   //Function for read Message
 
@@ -210,6 +209,4 @@ class UserFunctions {
       'tokenPush': userModel.tokenPush,
     });
   }
-
-  
 }
