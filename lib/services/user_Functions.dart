@@ -209,4 +209,32 @@ class UserFunctions {
       'tokenPush': userModel.tokenPush,
     });
   }
+
+  //delete message
+  static Future<void> deleteMessage(Message message) async {
+    await firebaseFirestore
+        .collection('chats/${getConversationID(message.toId)}/messages/')
+        .doc(message.sent)
+        .delete();
+
+    if (message.type == Type.image) {
+      await firebaseStorage.refFromURL(message.msg).delete();
+    }
+  }
+
+  //update message
+  static Future<void> updateMessage(Message message, String updatedMsg) async {
+    await firebaseFirestore
+        .collection('chats/${getConversationID(message.toId)}/messages/')
+        .doc(message.sent)
+        .update({'msg': updatedMsg});
+  }
+
+    //update read status of message
+  static Future<void> updateMessageReadStatus(Message message) async {
+    firebaseFirestore
+        .collection('chats/${getConversationID(message.fromId)}/messages/')
+        .doc(message.sent)
+        .update({'read': DateTime.now().millisecondsSinceEpoch.toString()});
+  }
 }

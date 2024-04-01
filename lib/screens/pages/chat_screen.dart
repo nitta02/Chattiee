@@ -85,7 +85,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 itemCount: dataList.length,
                                 physics: const BouncingScrollPhysics(),
                                 itemBuilder: (context, index) {
-                                  return Messages(messModel: dataList[index]);
+                                  return Messages(message: dataList[index]);
                                 },
                               );
                             }
