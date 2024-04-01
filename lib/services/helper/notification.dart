@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:chattiee/model/chatuserModel.dart';
 import 'package:chattiee/services/auth/constants.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart';
 
 class NotificationFunctions {
@@ -12,6 +13,14 @@ class NotificationFunctions {
       if (value != null) {
         userModel.tokenPush = value;
         print('Token:  $value');
+      }
+    });
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
       }
     });
   }
@@ -27,9 +36,9 @@ class NotificationFunctions {
           "body": msg,
           "android_channel_id": "chats"
         },
-        // "data": {
-        //   "some_data": "User ID: ${me.id}",
-        // },
+        "data": {
+          "some_data": "User ID: ${userModel.id}",
+        },
       };
 
       var res = await post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
