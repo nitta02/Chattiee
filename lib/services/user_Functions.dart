@@ -39,6 +39,34 @@ class UserFunctions {
         .set(chatUser.toJson());
   }
 
+  // for adding an chat user for our conversation
+  static Future<bool> addChatUser(String email) async {
+    final data = await firebaseFirestore
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .get();
+
+    print('data: ${data.docs}');
+
+    if (data.docs.isNotEmpty && data.docs.first.id != user.uid) {
+      //user exists
+
+      print('user exists: ${data.docs.first.data()}');
+
+      firebaseFirestore
+          .collection('users')
+          .doc(user.uid)
+          .collection('my_users')
+          .doc(data.docs.first.id)
+          .set({});
+
+      return true;
+    } else {
+      //user doesn't exists
+
+      return false;
+    }
+  }
   //For getting self information
 
   static Future<void> selfInfo() async {
@@ -230,7 +258,7 @@ class UserFunctions {
         .update({'msg': updatedMsg});
   }
 
-    //update read status of message
+  //update read status of message
   static Future<void> updateMessageReadStatus(Message message) async {
     firebaseFirestore
         .collection('chats/${getConversationID(message.fromId)}/messages/')
