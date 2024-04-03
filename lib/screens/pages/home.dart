@@ -28,15 +28,14 @@ class _HomeScreenState extends State<HomeScreen> {
     UserFunctions.selfInfo();
     SystemChannels.lifecycle.setMessageHandler((message) {
       // print(message);
-      if (auth.currentUser!=null) {
-        
-      if (message.toString().contains('resume')) {
-        UserFunctions.updateActiveStatus(true);
-      }
+      if (auth.currentUser != null) {
+        if (message.toString().contains('resume')) {
+          UserFunctions.updateActiveStatus(true);
+        }
 
-      if (message.toString().contains('pause')) {
-        UserFunctions.updateActiveStatus(false);
-      }
+        if (message.toString().contains('pause')) {
+          UserFunctions.updateActiveStatus(false);
+        }
       }
       return Future.value(message);
     });
@@ -120,7 +119,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             floatingActionButton: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                _addChatUserDialog();
+              },
               child: const Icon(Icons.add_comment),
             ),
             body: StreamBuilder(
@@ -167,7 +168,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  
   // for adding new chat user
   void _addChatUserDialog() {
     String email = '';
