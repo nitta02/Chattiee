@@ -1,8 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:chattiee/model/messageModel.dart';
-import 'package:chattiee/screens/pages/chat_screen.dart';
-import 'package:chattiee/services/auth/constants.dart';
-import 'package:chattiee/services/helper/date&time.dart';
 import 'package:chattiee/services/user_Functions.dart';
 import 'package:chattiee/widgets/alart_dialog.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +23,7 @@ class _UserPictureImageWidgetState extends State<UserPictureImageWidget> {
     return StreamBuilder(
       stream: UserFunctions.getLastMessage(widget.user),
       builder: (context, snapshot) {
-        final data = snapshot.data?.docs;
+        // final data = snapshot.data?.docs;
 
         // // print("Data${jsonEncode(data![0].data())}");
         // final dataList =
