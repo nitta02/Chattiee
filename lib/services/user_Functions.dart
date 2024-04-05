@@ -162,7 +162,8 @@ class UserFunctions {
           .collection('chats/${getConversationID(chatUser.id)}/messages/');
       await ref.doc(time).set(message.toJson()).then((value) =>
           NotificationFunctions.sendPushNotification(
-              chatUser, type == Type.text ? msg : 'image'));
+              chatUser, type == Type.text ? msg : 'image')
+              );
     } catch (e, stackTrace) {
       print('Error sending message: $e');
       print('Stack trace: $stackTrace');

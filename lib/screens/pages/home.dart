@@ -2,6 +2,7 @@
 
 import 'package:chattiee/model/chatuserModel.dart';
 import 'package:chattiee/screens/pages/profile.dart';
+import 'package:chattiee/screens/pages/user_chat_image.dart';
 import 'package:chattiee/services/auth/constants.dart';
 import 'package:chattiee/services/auth/dialog.dart';
 import 'package:chattiee/services/user_Functions.dart';
@@ -144,17 +145,48 @@ class _HomeScreenState extends State<HomeScreen> {
                           [];
 
                       if (dataList.isNotEmpty) {
-                        return ListView.builder(
-                          itemCount:
-                              isSearching ? searchList.length : dataList.length,
-                          physics: const BouncingScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return UserWidget(
-                              user: isSearching
-                                  ? searchList[index]
-                                  : dataList[index],
-                            );
-                          },
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              Flexible(
+                                child: ListView.builder(
+                                  // scrollDirection: Axis.horizontal,
+                                  itemCount: isSearching
+                                      ? searchList.length
+                                      : dataList.length,
+                                  // physics: const BouncingScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return UserPictureImageWidget(
+                                      user: isSearching
+                                          ? searchList[index]
+                                          : dataList[index],
+                                    );
+                                  },
+                                ),
+                              ),
+                              const Divider(
+                                color: Colors.blueGrey,
+                                thickness: 0.5,
+                              ),
+                              Flexible(
+                                flex: 3,
+                                child: ListView.builder(
+                                  itemCount: isSearching
+                                      ? searchList.length
+                                      : dataList.length,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return UserWidget(
+                                      user: isSearching
+                                          ? searchList[index]
+                                          : dataList[index],
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         );
                       }
                     }
@@ -182,8 +214,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.circular(20)),
 
               //title
-              title: Row(
-                children: const [
+              title: const Row(
+                children: [
                   Icon(
                     Icons.person_add,
                     color: Colors.blue,
