@@ -51,11 +51,18 @@ class _SplashScreenState extends State<SplashScreen> {
     final mq = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: Colors.amber[100],
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset('assets/images/img1.png'),
-          const Text('WELCOME'),
+          Image.asset('assets/images/splash.png'),
+          const Text(
+            'Chattiee',
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ],
       ),
     );

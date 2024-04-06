@@ -93,10 +93,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontSize: 25,
                       ),
                     ),
-              leading: IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.home),
-              ),
+              // leading: IconButton(
+              //   onPressed: () {},
+              //   icon: const Icon(Icons.home),
+              // ),
+
               actions: [
                 IconButton(
                     onPressed: () {
@@ -106,8 +107,39 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     icon: Icon(
                         isSearching ? CupertinoIcons.clear : Icons.search)),
-                IconButton(
-                    onPressed: () {
+                // IconButton(
+                //     onPressed: () {
+                //       Navigator.push(
+                //           context,
+                //           MaterialPageRoute(
+                //             builder: (context) => ProfileScreen(
+                //               userModel: userModel,
+                //             ),
+                //           ));
+                //     },
+                //     icon: const Icon(CupertinoIcons.person)),
+              ],
+            ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                _addChatUserDialog();
+              },
+              child: const Icon(Icons.add_comment),
+            ),
+            drawer: Drawer(
+              backgroundColor: Colors.amber[100],
+              child: Column(
+                children: [
+                  const DrawerHeader(
+                      decoration: BoxDecoration(),
+                      child: Text(
+                        'Chattiee',
+                        style: TextStyle(
+                          fontSize: 25,
+                        ),
+                      )),
+                  ListTile(
+                    onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -116,14 +148,44 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ));
                     },
-                    icon: const Icon(CupertinoIcons.person)),
-              ],
-            ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                _addChatUserDialog();
-              },
-              child: const Icon(Icons.add_comment),
+                    leading: const Icon(Icons.person),
+                    title: const Text('Profile'),
+                  ),
+                  // ListTile(
+                  //   leading: Icon(Icons.settings),
+                  //   title: Text('Settings'),
+                  // ),
+
+                  ListTile(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            content: const Text('Are you sure?'),
+                            title: const Text('Logout'),
+                            // icon: Icon(Icons.logout),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('NO')),
+                              TextButton(
+                                  onPressed: () {
+                                    UserFunctions.signOut(context);
+                                  },
+                                  child: const Text('Yes')),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    leading: const Icon(Icons.logout),
+                    title: const Text('Logout'),
+                  )
+                ],
+              ),
             ),
             body: StreamBuilder(
               stream: UserFunctions.getuserAllData(),
@@ -148,10 +210,20 @@ class _HomeScreenState extends State<HomeScreen> {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              const Text(
+                                'Friends',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               Flexible(
+                                fit: FlexFit.loose,
+                                flex: 1,
                                 child: ListView.builder(
-                                  // scrollDirection: Axis.horizontal,
+                                  scrollDirection: Axis.horizontal,
                                   itemCount: isSearching
                                       ? searchList.length
                                       : dataList.length,
@@ -165,12 +237,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                   },
                                 ),
                               ),
+                              SizedBox(
+                                height: mqHeight * 0.01,
+                              ),
+                              const Text(
+                                'Chats',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               const Divider(
                                 color: Colors.blueGrey,
                                 thickness: 0.5,
                               ),
                               Flexible(
-                                flex: 3,
+                                flex: 4,
                                 child: ListView.builder(
                                   itemCount: isSearching
                                       ? searchList.length

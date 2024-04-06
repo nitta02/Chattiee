@@ -95,11 +95,18 @@ class _LoginScreenState extends State<LoginScreen> {
     final mq = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: Colors.amber[100],
       //app bar
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text('Welcome to We Chat'),
-      ),
+      // appBar: AppBar(
+      //   automaticallyImplyLeading: false,
+      //   title: const Text(
+      //     'Welcome to Chattiee',
+      //     style: TextStyle(
+      //       fontSize: 25,
+      //       fontWeight: FontWeight.bold,
+      //     ),
+      //   ),
+      // ),
 
       //body
       body: Stack(children: [
@@ -109,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
             right: _isAnimate ? mq.width * .25 : -mq.width * .5,
             width: mq.width * .5,
             duration: const Duration(seconds: 1),
-            child: Image.asset('assets/images/img1.png')),
+            child: Image.asset('assets/images/splash.png')),
 
         //google login button
         Positioned(
@@ -119,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
             height: mq.height * .06,
             child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 223, 255, 187),
+                    backgroundColor: const Color.fromARGB(255, 250, 252, 248),
                     shape: const StadiumBorder(),
                     elevation: 1),
                 onPressed: () {

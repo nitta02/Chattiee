@@ -3,13 +3,10 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chattiee/model/chatuserModel.dart';
-import 'package:chattiee/screens/pages/login.dart';
 import 'package:chattiee/services/auth/constants.dart';
 import 'package:chattiee/services/user_Functions.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -42,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           actions: [
             IconButton(
                 onPressed: () {
-                  signOut();
+                  UserFunctions.signOut(context);
                 },
                 icon: const Icon(Icons.logout)),
           ],
@@ -254,21 +251,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
       userImage = image!.path;
     });
     UserFunctions.userPicturUpdate(File(userImage!), context);
-  }
-
-  Future<void> signOut() async {
-    // await auth.signOut();
-    await UserFunctions.updateActiveStatus(false);
-    await GoogleSignIn().signOut().then((value) {
-      Navigator.pop(context);
-
-      Navigator.pop(context);
-      auth = FirebaseAuth.instance;
-    });
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const LoginScreen(),
-        ));
   }
 }

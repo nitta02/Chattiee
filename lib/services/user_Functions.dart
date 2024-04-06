@@ -3,11 +3,14 @@
 import 'dart:io';
 import 'package:chattiee/model/chatuserModel.dart';
 import 'package:chattiee/model/messageModel.dart';
+import 'package:chattiee/screens/pages/login.dart';
 import 'package:chattiee/services/auth/constants.dart';
 import 'package:chattiee/services/helper/notification.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class UserFunctions {
   // static User get user => auth.currentUser!;
@@ -67,6 +70,7 @@ class UserFunctions {
       return false;
     }
   }
+
   //For getting self information
 
   static Future<void> selfInfo() async {
@@ -162,8 +166,7 @@ class UserFunctions {
           .collection('chats/${getConversationID(chatUser.id)}/messages/');
       await ref.doc(time).set(message.toJson()).then((value) =>
           NotificationFunctions.sendPushNotification(
-              chatUser, type == Type.text ? msg : 'image')
-              );
+              chatUser, type == Type.text ? msg : 'image'));
     } catch (e, stackTrace) {
       print('Error sending message: $e');
       print('Stack trace: $stackTrace');
@@ -265,5 +268,22 @@ class UserFunctions {
         .collection('chats/${getConversationID(message.fromId)}/messages/')
         .doc(message.sent)
         .update({'read': DateTime.now().millisecondsSinceEpoch.toString()});
+  }
+
+  static Future<void> signOut(BuildContext context) async {
+    // await auth.signOut();
+    await UserFunctions.updateActiveStatus(false);
+    await GoogleSignIn().signOut().then((value) {
+      Navigator.pop(context);
+
+      Navigator.pop(context);
+      auth = FirebaseAuth.instance;
+    }).then((value) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const LoginScreen(),
+          ));
+    });
   }
 }
