@@ -55,7 +55,7 @@ class _UserPictureImageWidgetState extends State<UserPictureImageWidget> {
                     shape: BoxShape.circle,
                     border: Border.all(
                       width: 2.5,
-                      color: Colors.green,
+                      color: Colors.amber,
                     ),
                     image: DecorationImage(
                         image: NetworkImage(widget.user.image))),

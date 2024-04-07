@@ -26,8 +26,8 @@ class _UserWidgetState extends State<UserWidget> {
   @override
   Widget build(BuildContext context) {
     return Card(
-        shadowColor: Colors.red,
-        surfaceTintColor: Colors.blue,
+        shadowColor: Colors.black,
+        surfaceTintColor: Colors.amber[400],
         margin: const EdgeInsets.symmetric(
           horizontal: 10,
           vertical: 10,

@@ -91,6 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       'Chattiee',
                       style: TextStyle(
                         fontSize: 25,
+                        color: Colors.amber,
                       ),
                     ),
               // leading: IconButton(
@@ -121,6 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             floatingActionButton: FloatingActionButton(
+              backgroundColor: Colors.amber[100],
               onPressed: () {
                 _addChatUserDialog();
               },
