@@ -131,11 +131,17 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 children: [
                   const DrawerHeader(
-                      decoration: BoxDecoration(),
-                      child: Text(
-                        'Chattiee',
-                        style: TextStyle(
-                          fontSize: 25,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                        image: AssetImage('assets/images/splash.png'),
+                      )),
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Text(
+                          'Chattiee',
+                          style: TextStyle(
+                            fontSize: 25,
+                          ),
                         ),
                       )),
                   ListTile(
