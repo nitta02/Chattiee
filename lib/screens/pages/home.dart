@@ -123,6 +123,14 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             floatingActionButton: FloatingActionButton(
               backgroundColor: Colors.amber[100],
+              shape: CircleBorder(
+                  side: BorderSide(
+                width: mqWidth * 0.005,
+                color: Colors.amber,
+              )),
+              splashColor: Colors.white,
+              elevation: 10,
+              hoverColor: Colors.white,
               onPressed: () {
                 _addChatUserDialog();
               },
@@ -170,6 +178,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
+                            contentTextStyle: const TextStyle(
+                              color: Colors.black,
+                            ),
+                            titleTextStyle: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                             content: const Text('Are you sure?'),
                             title: const Text('Logout'),
                             // icon: Icon(Icons.logout),
@@ -178,12 +194,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
-                                  child: const Text('NO')),
+                                  child: const Text(
+                                    'NO',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  )),
                               TextButton(
                                   onPressed: () {
                                     UserFunctions.signOut(context);
                                   },
-                                  child: const Text('Yes')),
+                                  child: const Text(
+                                    'Yes',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  )),
                             ],
                           );
                         },
@@ -308,7 +334,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Icon(
                     Icons.person_add,
-                    color: Colors.blue,
+                    color: Colors.amber,
                     size: 28,
                   ),
                   Text('  Add User')
@@ -321,7 +347,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onChanged: (value) => email = value,
                 decoration: InputDecoration(
                     hintText: 'Email Id',
-                    prefixIcon: const Icon(Icons.email, color: Colors.blue),
+                    prefixIcon: const Icon(Icons.email, color: Colors.amber),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15))),
               ),
@@ -335,7 +361,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.pop(context);
                     },
                     child: const Text('Cancel',
-                        style: TextStyle(color: Colors.blue, fontSize: 16))),
+                        style: TextStyle(color: Colors.black, fontSize: 16))),
 
                 //add button
                 MaterialButton(
@@ -353,7 +379,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     child: const Text(
                       'Add',
-                      style: TextStyle(color: Colors.blue, fontSize: 16),
+                      style: TextStyle(color: Colors.black, fontSize: 16),
                     ))
               ],
             ));

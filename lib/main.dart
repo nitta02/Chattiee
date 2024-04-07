@@ -10,25 +10,7 @@ import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  ;
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  await FirebaseMessaging.instance.setAutoInitEnabled(true);
-
-  // var result = await FlutterNotificationChannel.registerNotificationChannel(
-  //   description: 'Chattie Messages',
-  //   id: 'chats',
-  //   importance: NotificationImportance.IMPORTANCE_HIGH,
-  //   name: 'Chattiee',
-  //   visibility: NotificationVisibility.VISIBILITY_PUBLIC,
-  //   // allowBubbles: true,
-  //   // enableVibration: true,
-  //   // enableSound: true,
-  //   // showBadge: true,
-  // );
-  // print(result);
-
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -53,3 +35,19 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
+  // await FirebaseMessaging.instance.setAutoInitEnabled(true);
+
+  // // var result = await FlutterNotificationChannel.registerNotificationChannel(
+  // //   description: 'Chattie Messages',
+  // //   id: 'chats',
+  // //   importance: NotificationImportance.IMPORTANCE_HIGH,
+  // //   name: 'Chattiee',
+  // //   visibility: NotificationVisibility.VISIBILITY_PUBLIC,
+  // //   // allowBubbles: true,
+  // //   // enableVibration: true,
+  // //   // enableSound: true,
+  // //   // showBadge: true,
+  // // );
+  // // print(result);
